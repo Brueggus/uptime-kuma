@@ -401,7 +401,7 @@ exports.dnsResolve = function (hostname, resolverServer, resolverPort, rrtype, t
                 path: requestURL.path,
                 method: "GET",
                 headers: {
-                    "Content-Type": "application/dns-message",
+                    "Accept": "application/dns-message",
                 },
                 // TODO: Option for relaxing certificate validation
             };
