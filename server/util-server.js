@@ -392,16 +392,19 @@ exports.dnsResolve = function (hostname, resolverServer, resolverPort, rrtype, t
             requestData.id = 0;
             const buf = dnsPacket.encode(requestData);
             // TODO: implement POST requests for wireformat and JSON
-            dohQuery = dohQuery || "dns-query?dns={query}";
-            dohQuery = dohQuery.replace("{query}", buf.toString("base64url"));
+            dohQuery = dohQuery || "dns-query";
+            //dohQuery = dohQuery || "dns-query?dns={query}";
+            //dohQuery = dohQuery.replace("{query}", buf.toString("base64url"));
             const requestURL = url.parse(`https://${resolverServer}:${resolverPort}/${dohQuery}`, true);
             const options = {
                 hostname: requestURL.hostname,
                 port: requestURL.port,
                 path: requestURL.path,
-                method: "GET",
+                method: "POST",
                 headers: {
-                    "Accept": "application/dns-message",
+                    'Content-Type': 'application/dns-message',
+                    'Content-Length': Buffer.byteLength(buf),
+                    "Accept": "application/dns-message"
                 },
                 // TODO: Option for relaxing certificate validation
             };
